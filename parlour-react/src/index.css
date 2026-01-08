@@ -771,6 +771,8 @@ footer {
 
   .navbar {
     padding: 1.5rem 2rem;
+    mix-blend-mode: normal;
+    /* Safety for mobile visibility */
   }
 
   .hero h1 {
