@@ -239,7 +239,7 @@ function App() {
           <a href="#contact" onClick={() => setIsMenuOpen(false)}>Book Now</a>
         </div>
         <button className="menu-btn" aria-label="Menu" onClick={toggleMenu}>
-          {isMenuOpen ? <X color="white" /> : <Menu color="white" />}
+          {isMenuOpen ? <X /> : <Menu />}
         </button>
       </nav>
 
