@@ -2,6 +2,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // Initialize Lenis for Smooth Scrolling
+// Initialize Lenis for Smooth Scrolling
 const lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -13,15 +14,14 @@ const lenis = new Lenis({
     touchMultiplier: 2,
 });
 
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
+// Sync Lenis with GSAP Ticker for zero-lag scrolling
+lenis.on('scroll', ScrollTrigger.update);
 
-requestAnimationFrame(raf);
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+});
 
-// Update ScrollTrigger on Lenis scroll
-// lenis.on('scroll', ScrollTrigger.update); // Usually not strictly necessary with newer GSAP/Lenis integration but good for sync
+gsap.ticker.lagSmoothing(0);
 
 // Preloader Animation
 window.addEventListener('load', () => {
@@ -178,28 +178,6 @@ let tween = gsap.to(".marquee-content", {
 }).totalProgress(0.5);
 
 gsap.set(".marquee-content", { xPercent: -50 });
-
-// Velocity Skew
-let scrollTimeout;
-ScrollTrigger.create({
-    trigger: "body",
-    onUpdate: (self) => {
-        const velocity = self.getVelocity();
-        // Adjust timeScale based on direction?
-        // Or just skew
-        gsap.to(".marquee-content", {
-            skewX: velocity / 300,
-            overwrite: 'auto',
-            duration: 0.2
-        });
-
-        // Reset skew when stopped
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            gsap.to(".marquee-content", { skewX: 0, duration: 0.5 });
-        }, 100);
-    }
-});
 
 // Services Reveal
 const serviceItems = document.querySelectorAll('.service-item');
