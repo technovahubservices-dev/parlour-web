@@ -2,16 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-import { Menu, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const [activeService, setActiveService] = useState('hero'); // Default bg
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const heroImgRef = useRef(null);
   const cursorDotRef = useRef(null);
   const cursorOutlineRef = useRef(null);
   const marqueeRef = useRef(null);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   // Initialize Lenis and Global Animations
   // Initialize Lenis and Global Animations
@@ -227,16 +230,16 @@ function App() {
       <div className="cursor-dot" ref={cursorDotRef}></div>
       <div className="cursor-outline" ref={cursorOutlineRef}></div>
 
-      <nav className="navbar">
+      <nav className={`navbar ${isMenuOpen ? 'menu-open' : ''}`}>
         <div className="logo">LUMIÈRE</div>
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#services">Services</a>
-          <a href="#experience">The Experience</a>
-          <a href="#contact">Book Now</a>
+        <div className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+          <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+          <a href="#services" onClick={() => setIsMenuOpen(false)}>Services</a>
+          <a href="#experience" onClick={() => setIsMenuOpen(false)}>The Experience</a>
+          <a href="#contact" onClick={() => setIsMenuOpen(false)}>Book Now</a>
         </div>
-        <button className="menu-btn" aria-label="Menu">
-          <Menu color="white" />
+        <button className="menu-btn" aria-label="Menu" onClick={toggleMenu}>
+          {isMenuOpen ? <X color="white" /> : <Menu color="white" />}
         </button>
       </nav>
 
